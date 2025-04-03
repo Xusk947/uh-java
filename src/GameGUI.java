@@ -11,8 +11,12 @@ import java.util.List;
  * Graphical User Interface for the BATHS game.
  * Added improved UI and save/load functionality.
  * 
+ * Note: This GUI provides an interface for managing ship battles,
+ * including selecting ships, choosing encounter types, and viewing battle results.
+ * The save/load functionality allows game state persistence between sessions.
+ * 
  * @author Farrukh Kasimkhodja
- * @version 01/04/2025 (evening)
+ * @version 01/04/2025
  */
 public class GameGUI extends JFrame {
     private BATHS game;
