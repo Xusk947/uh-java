@@ -1,7 +1,7 @@
 package wars;
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 /**
  * This class implements the behaviour expected from the BATHS
  system as required for 5COM2007 Cwk1B BATHS - Feb 2025
@@ -72,13 +72,25 @@ public class SeaBattles implements BATHS
     {
         StringBuilder sb = new StringBuilder();
         sb.append("Admiral: ").append(admiral).append("\n");
-        sb.append("War Chest: ").append(warChest).append(" pounds\n");
-        sb.append("Status: ").append(defeated ? "Defeated" : "Active").append("\n\n");
+        sb.append("War Chest: ").append((int)warChest).append(" pounds\n");
+        sb.append("Status: ").append(defeated ? "Defeated" : "Is OK").append("\n\n");
         
         // Add squadron information
         sb.append("Squadron: ").append("\n");
         String squadron = getSquadron();
         sb.append(squadron).append("\n\n");
+        
+        // Add ships that are resting
+        sb.append("Resting Ships: ").append("\n");
+        boolean hasRestingShips = false;
+        StringBuilder restingShips = new StringBuilder();
+        for (Ship ship : allShips.values()) {
+            if (ship.getState() == ShipState.RESTING) {
+                restingShips.append(ship.toString()).append("\n");
+                hasRestingShips = true;
+            }
+        }
+        sb.append(hasRestingShips ? restingShips.toString() : "No ships resting").append("\n\n");
         
         // Add reserve fleet information
         sb.append("Reserve Fleet: ").append("\n");
@@ -135,7 +147,7 @@ public class SeaBattles implements BATHS
         
         for (Ship ship : allShips.values()) {
             if (ship.getState() == ShipState.RESERVE) {
-                sb.append(ship.toString()).append(" [Cost: ").append(ship.getCommissionFee()).append(" gold]").append("\n");
+                sb.append(ship.toString()).append("\n");
                 hasReserveShips = true;
             }
         }
@@ -222,7 +234,7 @@ public class SeaBattles implements BATHS
             return "\nNo such ship";
         }
         
-        return ship.toString();
+        return ship.getShipDescription();
     }     
  
     // ***************** Fleet Ships ************************   

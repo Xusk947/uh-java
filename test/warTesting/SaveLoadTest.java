@@ -129,6 +129,19 @@ public class SaveLoadTest {
             System.out.println("Load non-existent file test failed: " + e.getMessage());
         }
         
+        // Test for the specific issue with manOWarFacingBattleRestingNotInSquadron
+        try {
+            System.out.println("Testing ship state after battle...");
+            test.game.commissionShip("Victory");
+            test.game.fightEncounter(10);  // This should put Victory in RESTING state
+            boolean inSquadron = test.game.isInSquadron("Victory");
+            System.out.println("Is ship in squadron after winning and resting: " + inSquadron);
+            assertFalse("Ship should not be in squadron when resting", inSquadron);
+            System.out.println("Test passed - ship properly not in squadron when resting!");
+        } catch (AssertionError e) {
+            System.out.println("Test failed: " + e.getMessage());
+        }
+        
         test.tearDown();
     }
     

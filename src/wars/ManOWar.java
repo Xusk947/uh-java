@@ -77,6 +77,6 @@ public class ManOWar extends Ship
     @Override
     public String toString() 
     {
-        return super.toString() + " - Man-O-War with " + decks + " decks and " + marines + " marines";
+        return getName() + " " + getCaptain() + " " + getBattleSkill() + " " + getCommissionFee() + " " + decks + " " + marines + " ManOWar";
     }
 }

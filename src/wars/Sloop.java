@@ -62,7 +62,6 @@ public class Sloop extends Ship
     @Override
     public String toString() 
     {
-        return super.toString() + " - Sloop" + 
-               (hasDoctor ? " with a doctor" : " without a doctor");
+        return getName() + " " + getCaptain() + " " + getBattleSkill() + " " + commissionFee + " " + hasDoctor + " Sloop";
     }
 }

@@ -78,7 +78,16 @@ public class Frigate extends Ship
     @Override
     public String toString() 
     {
-        return super.toString() + " - Frigate with " + cannons + " cannons" + 
-               (hasPinnace ? " and a pinnace" : ", no pinnace");
+        return getName() + " " + getCaptain() + " " + getBattleSkill() + " " + getCommissionFee() + " " + cannons + " " + hasPinnace + " Frigate";
+    }
+    
+    /**
+     * Returns a detailed description of the Frigate
+     * @return a detailed description of the Frigate
+     */
+    @Override
+    public String getShipDescription() 
+    {
+        return getName() + " " + getCaptain() + " " + getBattleSkill() + " " + getCommissionFee();
     }
 }

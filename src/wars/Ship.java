@@ -87,12 +87,20 @@ public abstract class Ship implements Serializable
     public abstract boolean canFight(EncounterType type);
     
     /**
+     * Gets a detailed description of the ship
+     * @return a detailed description string
+     */
+    public String getShipDescription() {
+        return getName() + " " + getCaptain() + " " + getBattleSkill();
+    }
+    
+    /**
      * Returns a string representation of the ship
      * @return a string representation of the ship
      */
     @Override
     public String toString() 
     {
-        return name + " (Captain: " + captain + ", Skill: " + battleSkill + ", State: " + state + ")";
+        return getShipDescription();
     }
 }

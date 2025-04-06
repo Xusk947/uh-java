@@ -52,8 +52,14 @@ public class T1InitializationTest {
     //just a local method to check a String for contents
     private boolean containsText(String text, String[] s) {
         boolean check = true;
-        for(int i=0; i < s.length; i++)
-        check = check && text.contains(s[i]);
+        System.out.println("Looking for the following in output:");
+        for(int i=0; i < s.length; i++) {
+            boolean found = text.contains(s[i]);
+            System.out.println("- '" + s[i] + "': " + found);
+            check = check && found;
+        }
+        System.out.println("Full output:");
+        System.out.println(text);
         return check;
     }
     
