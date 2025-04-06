@@ -1,7 +1,5 @@
 package wars;
 
-import wars.SeaBattles;
-
 /**
  * Unit test for validating the save and load functionality of the SeaBattles game.
  * 
@@ -15,7 +13,7 @@ import wars.SeaBattles;
  */
 public class SaveLoadTest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { 
         System.out.println("*** SAVE/LOAD TEST ***");
         
         // Create a new game

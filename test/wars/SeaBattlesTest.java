@@ -1,7 +1,5 @@
 package wars;
 
-import wars.SeaBattles;
-
 /**
  * Test class for the SeaBattles implementation of BATHS
  */
