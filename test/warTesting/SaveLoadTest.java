@@ -1,4 +1,6 @@
-package wars;
+package warTesting;
+
+import wars.SeaBattles;
 
 /**
  * Unit test for validating the save and load functionality of the SeaBattles game.

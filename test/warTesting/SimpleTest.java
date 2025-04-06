@@ -1,4 +1,6 @@
-package wars;
+package warTesting;
+
+import wars.SeaBattles;
 
 /**
  * Simple test class for SeaBattles that doesn't require JUnit
