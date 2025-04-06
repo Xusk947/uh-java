@@ -12,9 +12,6 @@ import wars.SeaBattles;
  * 4. Creates a new game instance with different data
  * 5. Loads the saved game data
  * 6. Verifies that the loaded game correctly restores the original state
- * 
- * @author Team 42
- * @version 1.0
  */
 public class SaveLoadTest {
 

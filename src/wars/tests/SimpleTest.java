@@ -5,8 +5,6 @@ import wars.SeaBattles;
 /**
  * Simple test class for SeaBattles that doesn't require JUnit
  * This class can be used when JUnit libraries are not available.
- * 
- * @version 26/03/2025
  */
 public class SimpleTest {
     
