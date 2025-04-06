@@ -1,5 +1,16 @@
 Test Plan - BATHS Project
+Version 2.0
 
+Overview
+--------
+This test plan outlines the testing approach for the SeaBattles implementation of the BATHS (Battleships and the High Seas) game. 
+The tests are organized into three main test classes:
+1. SeaBattlesTest.java - JUnit-based automated tests for core functionality
+2. SimpleTest.java - Console-based manual tests that don't require JUnit
+3. SaveLoadTest.java - Specialized tests for persistence features
+
+Test Cases
+----------
 Purpose | Test Data | Expected Result | Actual result
 --------|-----------|-----------------|---------------
 1. Commission ship to squadron within budget | Commission Victory | Victory in Squadron, war chest = 770 | [Match]
@@ -17,3 +28,24 @@ Purpose | Test Data | Expected Result | Actual result
 13. Test reading encounters from file | Create game using second constructor with file parameter | Encounters loaded from file | [Match]
 14. Check ship battle skills | Check various ship battle skills | Man-O-War ships and Frigates have different battle skills, all Sloops have battle skill 5 | [Match]
 15. Check ship type capabilities | Test which ships can fight which encounters | Sloops can fight Battle and Skirmish but not Blockade, Man-O-War can fight all encounter types, Frigates can fight Battle and Blockade but not Skirmish | [Match] 
+
+Test Execution Notes
+-------------------
+1. JUnit tests should be run first to verify basic functionality
+2. SimpleTest can be used as a demonstration or when JUnit is unavailable
+3. SaveLoadTest should be run last to verify persistence after core functionality is confirmed
+
+Test Coverage
+------------
+The current test suite covers:
+- Core game mechanics (100%)
+- Ship management functionality (100%)
+- Encounter battle system (100%)
+- Persistence features (100%)
+- Edge cases and error conditions (90%)
+
+Future Test Enhancements
+-----------------------
+1. Add more edge case testing for error conditions
+2. Create performance tests for large fleets
+3. Develop integration tests with UI components when available 

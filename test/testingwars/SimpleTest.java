@@ -12,8 +12,9 @@ import wars.*;
  * - Battle encounters (winning and losing)
  * - Ship restoration
  * 
- * @author Team CS90
- * @version 26/03/2025
+ * All test results are printed to standard output with clear pass/fail indicators.
+ * Tests are executed sequentially, with each test building on the game state from previous tests.
+ * 
  */
 public class SimpleTest {
     
