@@ -30,6 +30,12 @@ public class SimpleTest {
         System.out.println("\nAll tests completed!");
     }
     
+    /**
+     * Tests the initial state of a newly created game.
+     * Validates that:
+     * - The game is not in a defeated state
+     * - The war chest has the expected starting value of 1000 gold
+     */
     private static void testInitialState() {
         System.out.println("Test: Initial Game State");
         
@@ -46,6 +52,12 @@ public class SimpleTest {
         }
     }
     
+    /**
+     * Tests the ship commissioning functionality.
+     * Validates that:
+     * - A ship can be successfully added to the squadron
+     * - The war chest is reduced after commissioning
+     */
     private static void testCommissionShip() {
         System.out.println("Test: Commission Ship");
         
@@ -64,6 +76,13 @@ public class SimpleTest {
         }
     }
     
+    /**
+     * Tests the ship decommissioning functionality.
+     * Validates that:
+     * - A ship can be successfully removed from the squadron
+     * - The war chest increases after decommissioning
+     * - The ship is properly removed from the squadron
+     */
     private static void testDecommissionShip() {
         System.out.println("Test: Decommission Ship");
         
@@ -91,6 +110,12 @@ public class SimpleTest {
         game.commissionShip("Victory");
     }
     
+    /**
+     * Tests winning a battle encounter.
+     * Validates that:
+     * - A ship with sufficient skill can win an encounter
+     * - The war chest increases after winning
+     */
     private static void testFightEncounterWin() {
         System.out.println("Test: Fight Encounter (Win)");
         
@@ -113,6 +138,13 @@ public class SimpleTest {
         }
     }
     
+    /**
+     * Tests losing a battle encounter.
+     * Validates that:
+     * - A ship with insufficient skill loses the encounter
+     * - The ship sinks when it loses
+     * - The war chest decreases after losing
+     */
     private static void testFightEncounterLose() {
         System.out.println("Test: Fight Encounter (Lose)");
         
@@ -137,6 +169,12 @@ public class SimpleTest {
         }
     }
     
+    /**
+     * Tests the ship restoration functionality.
+     * Validates that:
+     * - A ship in RESTING state can be restored
+     * - A restored ship can participate in new encounters
+     */
     private static void testRestoreShip() {
         System.out.println("Test: Restore Ship");
         

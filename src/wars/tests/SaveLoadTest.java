@@ -3,7 +3,18 @@ package wars.tests;
 import wars.SeaBattles;
 
 /**
- * A simple test for specifically testing save and load functionality
+ * Unit test for validating the save and load functionality of the SeaBattles game.
+ * 
+ * This test performs the following operations:
+ * 1. Creates a new game instance with a test admiral
+ * 2. Makes changes to the game state (commissions a ship, fights an encounter)
+ * 3. Saves the game state to a file
+ * 4. Creates a new game instance with different data
+ * 5. Loads the saved game data
+ * 6. Verifies that the loaded game correctly restores the original state
+ * 
+ * @author Team 42
+ * @version 1.0
  */
 public class SaveLoadTest {
 
