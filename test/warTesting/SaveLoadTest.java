@@ -7,10 +7,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import wars.BATHS;
 import wars.SeaBattles;
 
-import static org.junit.Assert.*;
 
 /**
  * Unit test for validating the save and load functionality of the SeaBattles game.
