@@ -4,12 +4,6 @@ UH - Java assigment
 Progress 
 https://trello.com/b/pQ895Emt/uh-java
 
-# uh-java
-UH - Java assigment
-
-Progress 
-https://trello.com/b/pQ895Emt/uh-java
-
 ## Project Documentation
 
 For detailed information about the project structure, implemented features, running instructions, and design highlights, please refer to our [README.txt](README.txt) file.

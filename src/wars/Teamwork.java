@@ -1,10 +1,9 @@
-package wars; 
+package wars;
 
 
 /**
  * Details of your team
  * 
- * @author Team CS90
  * @version 26/03/2025
  */
 public class Teamwork

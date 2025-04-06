@@ -3,7 +3,6 @@ package wars;
 /**
  * A Frigate ship in the BATHS game
  * 
- * @author Student
  * @version 22/03/2025
  */
 public class Frigate extends Ship 

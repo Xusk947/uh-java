@@ -1,6 +1,6 @@
-package testingwars;
+package wars.tests;
 
-import wars.*;
+import wars.SeaBattles;
 
 /**
  * A simple test for specifically testing save and load functionality

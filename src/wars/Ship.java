@@ -4,10 +4,8 @@ import java.io.Serializable;
 
 /**
  * Abstract class representing a ship in the BATHS game
- * Evening update with improved functionality
  * 
- * @author Aziz Nabiev
- * @version 01/04/2025 (evening)
+ * @version 22/03/2025
  */
 public abstract class Ship implements Serializable 
 {
@@ -26,16 +24,7 @@ public abstract class Ship implements Serializable
     {
         this.name = name;
         this.captain = captain;
-        
-        // Validate battle skill (0-10)
-        if (battleSkill < 0) {
-            this.battleSkill = 0;
-        } else if (battleSkill > 10) {
-            this.battleSkill = 10;
-        } else {
-            this.battleSkill = battleSkill;
-        }
-        
+        this.battleSkill = battleSkill;
         this.state = ShipState.RESERVE; // All ships start in reserve
     }
     
@@ -82,24 +71,6 @@ public abstract class Ship implements Serializable
     public void setState(ShipState state) 
     {
         this.state = state;
-    }
-    
-    /**
-     * Checks if the ship is in active state
-     * @return true if the ship is active, false otherwise
-     */
-    public boolean isActive() 
-    {
-        return state == ShipState.ACTIVE;
-    }
-    
-    /**
-     * Checks if the ship is in reserve state
-     * @return true if the ship is in reserve, false otherwise
-     */
-    public boolean isInReserve() 
-    {
-        return state == ShipState.RESERVE;
     }
     
     /**

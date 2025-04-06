@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * Class representing an encounter in the BATHS game
  * 
- * @author Student
  * @version 22/03/2025
  */
 public class Encounter implements Serializable 

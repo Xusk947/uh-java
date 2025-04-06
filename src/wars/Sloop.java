@@ -3,7 +3,6 @@ package wars;
 /**
  * A Sloop ship in the BATHS game
  * 
- * @author Student
  * @version 22/03/2025
  */
 public class Sloop extends Ship 

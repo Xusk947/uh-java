@@ -3,7 +3,6 @@ package wars;
 /**
  * A Man-O-War ship in the BATHS game
  * 
- * @author Student
  * @version 22/03/2025
  */
 public class ManOWar extends Ship 
