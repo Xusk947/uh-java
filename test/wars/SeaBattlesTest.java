@@ -1,4 +1,4 @@
-package wars.tests;
+package wars;
 
 import wars.SeaBattles;
 
