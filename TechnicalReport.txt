@@ -1,0 +1,88 @@
+BATHS Project Technical Report - Team CS90
+
+UML Class Diagram (Overview):
+[Ship (Abstract)] <-- [ManOWar, Frigate, Sloop]
+[Encounter]
+[ShipState (Enum)]
+[EncounterType (Enum)]
+[BATHS (Interface)] <-- [SeaBattles]
+[GameUI] --> [BATHS]
+[GameGUI] --> [BATHS]
+
+Design Decisions Analysis
+
+1. Ship Class Hierarchy and Polymorphism
+
+Design Decision: 
+We implemented an abstract Ship class with specific ship types (ManOWar, Frigate, Sloop) inheriting from it. Common properties and behaviors were placed in the abstract parent class, while specialized attributes and methods were implemented in the subclasses.
+
+Possible Alternatives:
+- Using a single Ship class with a "type" field to distinguish between ship types.
+- Using composition instead of inheritance, with a ShipType interface implemented by different ship type classes.
+
+Pros of Our Approach:
+- Clear and intuitive hierarchy that mirrors the real-world domain
+- Code reuse through inheritance reduces duplication
+- Polymorphism allows treatment of different ship types through a common interface
+- New ship types can be easily added without modifying existing code (Open-Closed Principle)
+- Abstract methods enforce implementing key behaviors in all subclasses
+
+Cons of Our Approach:
+- Inheritance creates tight coupling between parent and child classes
+- Increased complexity compared to a single class with type field
+- May lead to the "fragile base class problem" if the base class changes
+
+Reason for Final Decision:
+We chose inheritance because the ship types have clear and stable differences in behavior and attributes. The polymorphic capabilities (like the ability to call canFight() on any ship type) simplified the implementation of the game logic. Additionally, this approach provides better type safety and readability than using a single class with type fields.
+
+2. Collection Management for Ships and Encounters
+
+Design Decision:
+We used HashMap collections (Map<String, Ship> and Map<Integer, Encounter>) to store and retrieve ships and encounters by their unique identifiers.
+
+Possible Alternatives:
+- Using ArrayList or LinkedList with linear search for retrieval
+- Using a database or external storage system
+- Using specialized custom collections
+
+Pros of Our Approach:
+- O(1) lookup time for ships and encounters by name/number
+- Built-in key uniqueness enforcement
+- Easy to implement and understand
+- Native Java collections are well-tested and efficient
+- Maps maintain the association between identifiers and objects
+
+Cons of Our Approach:
+- Slightly more complex than simple lists
+- No inherent ordering unless using sorted maps
+- Requires careful management when changing keys
+
+Reason for Final Decision:
+Maps provide the most efficient lookup operations, which are frequently needed in the game. The clear association between identifiers (ship names/encounter numbers) and the objects themselves also makes the code more readable and maintainable. The performance benefits of O(1) lookup time become significant as the number of ships and encounters grows.
+
+3. State Management Using Enumerations
+
+Design Decision:
+We used enum classes (ShipState and EncounterType) to represent the state of ships and types of encounters instead of using string constants or integer codes.
+
+Possible Alternatives:
+- Using string constants (e.g., "ACTIVE", "RESTING", etc.)
+- Using integer codes (e.g., 0 for RESERVE, 1 for ACTIVE, etc.)
+- Using a State pattern with separate classes for each state
+
+Pros of Our Approach:
+- Type safety: compiler catches invalid state assignments
+- Self-documenting code with meaningful state names
+- Enums can include methods and fields, enhancing their functionality
+- Switch statements on enums are checked for completeness by the compiler
+- Serializable for persistence
+
+Cons of Our Approach:
+- Less flexible than the State pattern for complex state transitions
+- Changing/adding states requires recompilation
+- Can't extend enums (though this wasn't needed in our design)
+
+Reason for Final Decision:
+Enumerations provide the perfect balance between simplicity and type safety for representing the limited and well-defined states in our game. They prevent errors that could occur with string or integer representations (like typos or invalid codes) while being more lightweight than a full State pattern implementation, which would be overkill for our needs.
+
+In conclusion, our design choices prioritized clarity, maintainability, and adherence to object-oriented principles. The inheritance hierarchy for ships, efficient collections for data management, and type-safe enumerations for states resulted in a robust and extensible system that effectively models the Battles and the High Seas game requirements. 
