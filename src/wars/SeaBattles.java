@@ -526,7 +526,7 @@ public class SeaBattles implements BATHS
  
     
     // ***************   file write/read  *********************
-    /** Writes whole game to the specified file
+    /** Writes whole game to the specified file, to save all progress
      * @param fname name of file storing requests
      */
     public void saveGame(String fname)
