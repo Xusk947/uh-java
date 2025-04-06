@@ -2,10 +2,9 @@ package wars;
 
 /**
  * A Frigate ship in the BATHS game
- * First implementation of a concrete ship type
  * 
- * @author Aziz Nabiev
- * @version 01/04/2025 (evening)
+ * @author Student
+ * @version 22/03/2025
  */
 public class Frigate extends Ship 
 {
@@ -53,21 +52,24 @@ public class Frigate extends Ship
     @Override
     public double getCommissionFee() 
     {
-        // Basic implementation - will be refined later
         return cannons * 10.0;
     }
     
     /**
      * Checks if the ship can fight a particular type of encounter
-     * Frigate can fight Battle and Skirmish
+     * Frigate can fight Battle and Skirmish, and Blockade if it has a pinnace
      * @param type the type of encounter
      * @return true if the ship can fight the encounter, false otherwise
      */
     @Override
     public boolean canFight(EncounterType type) 
     {
-        // Simple implementation - will add more logic later
-        return type == EncounterType.BATTLE || type == EncounterType.SKIRMISH;
+        if (type == EncounterType.BATTLE || type == EncounterType.SKIRMISH) {
+            return true;
+        } else if (type == EncounterType.BLOCKADE) {
+            return hasPinnace;
+        }
+        return false;
     }
     
     /**
@@ -77,8 +79,7 @@ public class Frigate extends Ship
     @Override
     public String toString() 
     {
-        return super.toString() + " - Frigate with " + cannons + " cannons";
+        return super.toString() + " - Frigate with " + cannons + " cannons" + 
+               (hasPinnace ? " and a pinnace" : ", no pinnace");
     }
-    
-    // TODO: Add more specific Frigate methods and capabilities
 }

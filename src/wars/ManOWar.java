@@ -2,10 +2,9 @@ package wars;
 
 /**
  * A Man-O-War ship in the BATHS game
- * Initial implementation - will be expanded
  * 
- * @author Aziz Nabiev
- * @version 01/04/2025 (evening)
+ * @author Student
+ * @version 22/03/2025
  */
 public class ManOWar extends Ship 
 {
@@ -47,27 +46,29 @@ public class ManOWar extends Ship
     
     /**
      * Returns the commission fee for this Man-O-War
-     * Basic implementation - fee is fixed at 500 pounds
+     * Fee is 500 pounds, or 300 pounds if only 2 decks
      * @return the commission fee
      */
     @Override
     public double getCommissionFee() 
     {
-        // TODO: Implement variable fee based on decks
-        return 500.0;
+        if (decks == 2) {
+            return 300.0;
+        } else {
+            return 500.0;
+        }
     }
     
     /**
      * Checks if the ship can fight a particular type of encounter
-     * Basic implementation - Man-O-War can fight Battle
+     * Man-O-War can fight Blockade and Battle, but not Skirmish
      * @param type the type of encounter
      * @return true if the ship can fight the encounter, false otherwise
      */
     @Override
     public boolean canFight(EncounterType type) 
     {
-        // TODO: Expand capabilities based on ship characteristics
-        return type == EncounterType.BATTLE;
+        return type == EncounterType.BLOCKADE || type == EncounterType.BATTLE;
     }
     
     /**
@@ -77,8 +78,6 @@ public class ManOWar extends Ship
     @Override
     public String toString() 
     {
-        return super.toString() + " - Man-O-War with " + decks + " decks";
+        return super.toString() + " - Man-O-War with " + decks + " decks and " + marines + " marines";
     }
-    
-    // TODO: Add methods for marine operations
 }
