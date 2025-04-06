@@ -20,12 +20,6 @@ public class SeaBattlesTest {
         game = new SeaBattles("Admiral Test");
     }
     
-    /**
-     * Tests the initial state of a newly created game.
-     * Verifies that:
-     * - The game is not in a defeated state
-     * - The war chest starts with the expected 1000 gold
-     */
     @Test
     public void testInitialState() {
         // Test initial state of the game
@@ -33,13 +27,6 @@ public class SeaBattlesTest {
         assertEquals("War chest should start with 1000 gold", 1000.0, game.getWarChest(), 0.01);
     }
     
-    /**
-     * Tests the ship commissioning functionality.
-     * Verifies that:
-     * - Valid ships can be commissioned successfully
-     * - Non-existent ships cannot be commissioned
-     * - Ships cannot be commissioned when there's insufficient funds
-     */
     @Test
     public void testCommissionShip() {
         // Test commissioning a ship
@@ -61,12 +48,6 @@ public class SeaBattlesTest {
         assertEquals("Should not have enough money", "Not enough money", result);
     }
     
-    /**
-     * Tests the ship decommissioning functionality.
-     * Verifies that:
-     * - Ships in the squadron can be decommissioned
-     * - Attempting to decommission non-existent ships fails
-     */
     @Test
     public void testDecommissionShip() {
         // Commission a ship first
@@ -83,13 +64,6 @@ public class SeaBattlesTest {
         assertFalse("Cannot decommission non-existent ship", result);
     }
     
-    /**
-     * Tests the encounter battle system.
-     * Verifies that:
-     * - Ships with sufficient skill can win encounters
-     * - Ships with insufficient skill lose encounters and sink
-     * - Game appropriately handles having no suitable ships for an encounter
-     */
     @Test
     public void testFightEncounter() {
         // Commission a ship suitable for battle
@@ -109,12 +83,6 @@ public class SeaBattlesTest {
         assertTrue("Should lose due to no suitable ship", result.contains("lost as no ship available"));
     }
     
-    /**
-     * Tests the ship restoration functionality.
-     * Verifies that:
-     * - Ships in RESTING state can be restored
-     * - Restored ships can participate in new encounters
-     */
     @Test
     public void testRestoreShip() {
         // Commission a ship
@@ -134,11 +102,6 @@ public class SeaBattlesTest {
         assertTrue("Victory should be able to fight again", result.contains("Encounter"));
     }
     
-    /**
-     * Tests the game defeat condition.
-     * Verifies that:
-     * - Game enters defeated state when no ships remain and war chest is depleted
-     */
     @Test
     public void testIsDefeated() {
         // Commission all ships to deplete war chest
