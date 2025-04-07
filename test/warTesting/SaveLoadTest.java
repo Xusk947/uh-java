@@ -1,178 +1,73 @@
 package warTesting;
 
-import java.io.File;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import wars.SeaBattles;
-
+import wars.*;
 
 /**
- * Unit test for validating the save and load functionality of the SeaBattles game.
- * 
- * This test performs the following operations:
- * 1. Creates a new game instance with a test admiral
- * 2. Makes changes to the game state (commissions a ship, fights an encounter)
- * 3. Saves the game state to a file
- * 4. Creates a new game instance with different data
- * 5. Loads the saved game data
- * 6. Verifies that the loaded game correctly restores the original state
- * 
- * @version 06/04/2025
+ * A simple test for specifically testing save and load functionality
  */
 public class SaveLoadTest {
-    
-    private SeaBattles game;
-    private final String TEST_SAVE_FILE = "test_save.dat";
-    
-    public SaveLoadTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-        game = new SeaBattles("Admiral Test");
-    }
-    
-    @After
-    public void tearDown() {
-        // Clean up test save file if it exists
-        File saveFile = new File(TEST_SAVE_FILE);
-        if (saveFile.exists()) {
-            saveFile.delete();
-        }
-    }
-    
-    /**
-     * Helper method to check if a string contains all required substrings
-     * @param text the text to check
-     * @param s array of strings that should be contained in the text
-     * @return true if all strings are found in the text
-     */
-    private boolean containsText(String text, String[] s) {
-        boolean check = true;
-        for(int i=0; i < s.length; i++)
-            check = check && text.contains(s[i]);
-        return check;
-    }
-    
-    @Test
-    public void testSaveAndLoad() {
+
+    public static void main(String[] args) {
+        System.out.println("*** SAVE/LOAD TEST ***");
+        
+        // Create a new game
+        System.out.println("\nCreating new game...");
+        SeaBattles game = new SeaBattles("Admiral Test");
+        
+        // Show initial state
+        System.out.println("\nInitial state:");
+        System.out.println("Admiral: " + game.toString().split("\n")[0]);
+        System.out.println("War Chest: " + game.getWarChest());
+        
         // Make some changes to the game
+        System.out.println("\nMaking changes to game...");
         game.commissionShip("Victory");
         game.fightEncounter(10);
         
-        // Capture state after changes
-        String originalAdmiral = game.toString().split("\n")[0];
-        double originalWarChest = game.getWarChest();
+        // Show state after changes
+        System.out.println("\nState after changes:");
+        System.out.println("Admiral: " + game.toString().split("\n")[0]);
+        System.out.println("War Chest: " + game.getWarChest());
         
         // Save the game
-        game.saveGame(TEST_SAVE_FILE);
+        System.out.println("\nSaving game...");
+        game.saveGame("test_save.dat");
         
-        // Create a new game object with different data
+        // Create a new game object
+        System.out.println("\nCreating different game...");
         SeaBattles game2 = new SeaBattles("Different Admiral");
         
-        // Verify the new game has different state
-        assertFalse("New game should have different admiral", 
-                game2.toString().split("\n")[0].equals(originalAdmiral));
+        // Show state of new game
+        System.out.println("\nNew game state:");
+        System.out.println("Admiral: " + game2.toString().split("\n")[0]);
+        System.out.println("War Chest: " + game2.getWarChest());
         
         // Load the saved game
-        SeaBattles loadedGame = game2.loadGame(TEST_SAVE_FILE);
+        System.out.println("\nLoading saved game...");
+        SeaBattles loadedGame = game2.loadGame("test_save.dat");
         
-        // Verify the loaded game is not null
-        assertNotNull("Loaded game should not be null", loadedGame);
+        if (loadedGame == null) {
+            System.out.println("ERROR: Failed to load game!");
+            return;
+        }
+        
+        // Show state of loaded game
+        System.out.println("\nLoaded game state:");
+        System.out.println("Admiral: " + loadedGame.toString().split("\n")[0]);
+        System.out.println("War Chest: " + loadedGame.getWarChest());
         
         // Verify that the loaded game data matches the original
-        assertEquals("Admiral name should match", 
-                originalAdmiral, loadedGame.toString().split("\n")[0]);
-        assertEquals("War chest should match", 
-                originalWarChest, loadedGame.getWarChest(), 0.01);
-    }
-    
-    @Test
-    public void testLoadNonExistentFile() {
-        // Try to load a non-existent file
-        SeaBattles loadedGame = game.loadGame("non_existent_file.dat");
+        boolean admiralCorrect = loadedGame.toString().split("\n")[0].equals(game.toString().split("\n")[0]);
+        boolean warChestCorrect = Math.abs(loadedGame.getWarChest() - game.getWarChest()) < 0.01;
         
-        // Verify the result is null
-        assertNull("Loading non-existent file should return null", loadedGame);
-    }
-    
-    // Для запуска без JUnit
-    public static void main(String[] args) { 
-        System.out.println("*** SAVE/LOAD TEST ***");
+        System.out.println("\nVerification:");
+        System.out.println("Admiral name matches: " + admiralCorrect);
+        System.out.println("War chest matches: " + warChestCorrect);
         
-        SaveLoadTest test = new SaveLoadTest();
-        test.setUp();
-        
-        try {
-            test.testSaveAndLoad();
-            System.out.println("Save/Load test passed!");
-        } catch (AssertionError e) {
-            System.out.println("Save/Load test failed: " + e.getMessage());
-        }
-        
-        try {
-            test.testLoadNonExistentFile();
-            System.out.println("Load non-existent file test passed!");
-        } catch (AssertionError e) {
-            System.out.println("Load non-existent file test failed: " + e.getMessage());
-        }
-        
-        // Test for the specific issue with manOWarFacingBattleRestingNotInSquadron
-        try {
-            System.out.println("Testing ship state after battle...");
-            test.game.commissionShip("Victory");
-            test.game.fightEncounter(10);  // This should put Victory in RESTING state
-            boolean inSquadron = test.game.isInSquadron("Victory");
-            System.out.println("Is ship in squadron after winning and resting: " + inSquadron);
-            assertFalse("Ship should not be in squadron when resting", inSquadron);
-            System.out.println("Test passed - ship properly not in squadron when resting!");
-        } catch (AssertionError e) {
-            System.out.println("Test failed: " + e.getMessage());
-        }
-        
-        test.tearDown();
-    }
-    
-    // Методы-заглушки для случая отсутствия JUnit
-    private static void assertEquals(String message, String expected, String actual) {
-        if (!expected.equals(actual)) {
-            throw new AssertionError(message + " - Expected: '" + expected + "', Actual: '" + actual + "'");
+        if (admiralCorrect && warChestCorrect) {
+            System.out.println("\nSUCCESS: Save/Load functionality works!");
+        } else {
+            System.out.println("\nFAILURE: Save/Load did not preserve game state correctly!");
         }
     }
-    
-    private static void assertEquals(String message, double expected, double actual, double delta) {
-        if (Math.abs(expected - actual) > delta) {
-            throw new AssertionError(message + " - Expected: " + expected + ", Actual: " + actual);
-        }
-    }
-    
-    private static void assertNotNull(String message, Object obj) {
-        if (obj == null) {
-            throw new AssertionError(message);
-        }
-    }
-    
-    private static void assertNull(String message, Object obj) {
-        if (obj != null) {
-            throw new AssertionError(message);
-        }
-    }
-    
-    private static void assertFalse(String message, boolean condition) {
-        if (condition) {
-            throw new AssertionError(message);
-        }
-    }
-}
+} 

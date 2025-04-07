@@ -5,16 +5,13 @@
  */
 package warTesting;
 
+import wars.*;
 import java.util.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import wars.BATHS;
-import wars.SeaBattles;
-
 import static org.junit.Assert.*; 
 
 
@@ -52,14 +49,8 @@ public class T1InitializationTest {
     //just a local method to check a String for contents
     private boolean containsText(String text, String[] s) {
         boolean check = true;
-        System.out.println("Looking for the following in output:");
-        for(int i=0; i < s.length; i++) {
-            boolean found = text.contains(s[i]);
-            System.out.println("- '" + s[i] + "': " + found);
-            check = check && found;
-        }
-        System.out.println("Full output:");
-        System.out.println(text);
+        for(int i=0; i < s.length; i++)
+        check = check && text.contains(s[i]);
         return check;
     }
     

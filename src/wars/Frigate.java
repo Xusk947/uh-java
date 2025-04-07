@@ -1,9 +1,9 @@
 package wars;
 
 /**
- * A Frigate ship in the BATHS game
+ * This class represents a Frigate ship in the BATHS system
  * 
- * @version 22/03/2025
+ * @version 12/02/25
  */
 public class Frigate extends Ship 
 {
@@ -78,16 +78,7 @@ public class Frigate extends Ship
     @Override
     public String toString() 
     {
-        return getName() + " " + getCaptain() + " " + getBattleSkill() + " " + getCommissionFee() + " " + cannons + " " + hasPinnace + " Frigate";
-    }
-    
-    /**
-     * Returns a detailed description of the Frigate
-     * @return a detailed description of the Frigate
-     */
-    @Override
-    public String getShipDescription() 
-    {
-        return getName() + " " + getCaptain() + " " + getBattleSkill() + " " + getCommissionFee();
+        return super.toString() + " - Frigate with " + cannons + " cannons" + 
+               (hasPinnace ? " and a pinnace" : ", no pinnace");
     }
 }

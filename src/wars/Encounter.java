@@ -3,9 +3,9 @@ package wars;
 import java.io.Serializable;
 
 /**
- * Class representing an encounter in the BATHS game
+ * This class represents an encounter in the BATHS system
  * 
- * @version 22/03/2025
+ * @version 12/02/25
  */
 public class Encounter implements Serializable 
 {

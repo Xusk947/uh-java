@@ -3,9 +3,9 @@ package wars;
 import java.io.Serializable;
 
 /**
- * Abstract class representing a ship in the BATHS game
+ * This class represents a ship in the BATHS system
  * 
- * @version 22/03/2025
+ * @version 12/02/25
  */
 public abstract class Ship implements Serializable 
 {
@@ -87,20 +87,12 @@ public abstract class Ship implements Serializable
     public abstract boolean canFight(EncounterType type);
     
     /**
-     * Gets a detailed description of the ship
-     * @return a detailed description string
-     */
-    public String getShipDescription() {
-        return getName() + " " + getCaptain() + " " + getBattleSkill();
-    }
-    
-    /**
      * Returns a string representation of the ship
      * @return a string representation of the ship
      */
     @Override
     public String toString() 
     {
-        return getShipDescription();
+        return name + " (Captain: " + captain + ", Skill: " + battleSkill + ", State: " + state + ")";
     }
 }

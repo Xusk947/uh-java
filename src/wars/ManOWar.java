@@ -1,9 +1,9 @@
 package wars;
 
 /**
- * A Man-O-War ship in the BATHS game
+ * This class represents a Man O' War ship in the BATHS system
  * 
- * @version 22/03/2025
+ * @version 12/02/25
  */
 public class ManOWar extends Ship 
 {
@@ -77,6 +77,6 @@ public class ManOWar extends Ship
     @Override
     public String toString() 
     {
-        return getName() + " " + getCaptain() + " " + getBattleSkill() + " " + getCommissionFee() + " " + decks + " " + marines + " ManOWar";
+        return super.toString() + " - Man-O-War with " + decks + " decks and " + marines + " marines";
     }
 }

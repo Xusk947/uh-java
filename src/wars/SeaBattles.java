@@ -72,25 +72,25 @@ public class SeaBattles implements BATHS
     {
         StringBuilder sb = new StringBuilder();
         sb.append("Admiral: ").append(admiral).append("\n");
-        sb.append("War Chest: ").append((int)warChest).append(" pounds\n");
+        sb.append("War Chest: ").append(warChest).append(" pounds\n");
         sb.append("Status: ").append(defeated ? "Defeated" : "Is OK").append("\n\n");
         
         // Add squadron information
         sb.append("Squadron: ").append("\n");
-        String squadron = getSquadron();
-        sb.append(squadron).append("\n\n");
+        boolean hasSquadronShips = false;
         
-        // Add ships that are resting
-        sb.append("Resting Ships: ").append("\n");
-        boolean hasRestingShips = false;
-        StringBuilder restingShips = new StringBuilder();
         for (Ship ship : allShips.values()) {
-            if (ship.getState() == ShipState.RESTING) {
-                restingShips.append(ship.toString()).append("\n");
-                hasRestingShips = true;
+            if (ship.getState() == ShipState.ACTIVE || ship.getState() == ShipState.RESTING) {
+                sb.append(ship.toString()).append("\n");
+                hasSquadronShips = true;
             }
         }
-        sb.append(hasRestingShips ? restingShips.toString() : "No ships resting").append("\n\n");
+        
+        if (!hasSquadronShips) {
+            sb.append("No ships").append("\n\n");
+        } else {
+            sb.append("\n");
+        }
         
         // Add reserve fleet information
         sb.append("Reserve Fleet: ").append("\n");
@@ -147,7 +147,35 @@ public class SeaBattles implements BATHS
         
         for (Ship ship : allShips.values()) {
             if (ship.getState() == ShipState.RESERVE) {
-                sb.append(ship.toString()).append("\n");
+                if (ship instanceof ManOWar) {
+                    ManOWar manOWar = (ManOWar) ship;
+                    sb.append(ship.getName()).append(" (Captain: ").append(ship.getCaptain())
+                      .append(", Skill: ").append(ship.getBattleSkill())
+                      .append(", Cost: ").append(ship.getCommissionFee()).append(" gold")
+                      .append(", Decks: ").append(manOWar.getDecks())
+                      .append(", Crew: ").append(manOWar.getMarines())
+                      .append(") ManOWar")
+                      .append("\n");
+                } else if (ship instanceof Frigate) {
+                    Frigate frigate = (Frigate) ship;
+                    sb.append(ship.getName()).append(" (Captain: ").append(ship.getCaptain())
+                      .append(", Skill: ").append(ship.getBattleSkill())
+                      .append(", Cost: ").append(ship.getCommissionFee()).append(" gold")
+                      .append(", Cannons: ").append(frigate.getCannons())
+                      .append(", Pinnace: ").append(frigate.hasPinnace())
+                      .append(") Frigate")
+                      .append("\n");
+                } else if (ship instanceof Sloop) {
+                    Sloop sloop = (Sloop) ship;
+                    sb.append(ship.getName()).append(" (Captain: ").append(ship.getCaptain())
+                      .append(", Skill: ").append(ship.getBattleSkill())
+                      .append(", Cost: ").append(ship.getCommissionFee()).append(" gold")
+                      .append(", Fast: ").append(sloop.hasDoctor())
+                      .append(") Sloop")
+                      .append("\n");
+                } else {
+                    sb.append(ship.toString()).append(" [Cost: ").append(ship.getCommissionFee()).append(" gold]").append("\n");
+                }
                 hasReserveShips = true;
             }
         }
@@ -234,7 +262,36 @@ public class SeaBattles implements BATHS
             return "\nNo such ship";
         }
         
-        return ship.getShipDescription();
+        StringBuilder sb = new StringBuilder();
+        
+        if (ship instanceof ManOWar) {
+            ManOWar manOWar = (ManOWar) ship;
+            sb.append(ship.getName()).append(" (Captain: ").append(ship.getCaptain())
+              .append(", Skill: ").append(ship.getBattleSkill())
+              .append(", Cost: ").append(ship.getCommissionFee()).append(" gold")
+              .append(", Decks: ").append(manOWar.getDecks())
+              .append(", Crew: ").append(manOWar.getMarines())
+              .append(") ManOWar");
+        } else if (ship instanceof Frigate) {
+            Frigate frigate = (Frigate) ship;
+            sb.append(ship.getName()).append(" (Captain: ").append(ship.getCaptain())
+              .append(", Skill: ").append(ship.getBattleSkill())
+              .append(", Cost: ").append(ship.getCommissionFee()).append(" gold")
+              .append(", Cannons: ").append(frigate.getCannons())
+              .append(", Pinnace: ").append(frigate.hasPinnace())
+              .append(") Frigate");
+        } else if (ship instanceof Sloop) {
+            Sloop sloop = (Sloop) ship;
+            sb.append(ship.getName()).append(" (Captain: ").append(ship.getCaptain())
+              .append(", Skill: ").append(ship.getBattleSkill())
+              .append(", Cost: ").append(ship.getCommissionFee()).append(" gold")
+              .append(", Fast: ").append(sloop.hasDoctor())
+              .append(") Sloop");
+        } else {
+            sb.append(ship.toString());
+        }
+        
+        return sb.toString();
     }     
  
     // ***************** Fleet Ships ************************   
@@ -284,7 +341,7 @@ public class SeaBattles implements BATHS
             return false;
         }
         
-        return ship.getState() == ShipState.ACTIVE || ship.getState() == ShipState.RESTING;
+        return ship.getState() == ShipState.ACTIVE;
     }
     
     /** Decommissions a ship from the squadron to the reserve fleet (if they are in the squadron)
@@ -392,10 +449,18 @@ public class SeaBattles implements BATHS
         if (selectedShip.getBattleSkill() >= requiredSkill) {
             // Ship wins the encounter
             warChest += prizeMoney;
-            selectedShip.setState(ShipState.RESTING);
             
-            return "Encounter won by " + selectedShip.getName() + " - " + prizeMoney + 
-                   " pounds added to War Chest. War Chest now: " + warChest + " pounds";
+            // If the encounter is a Battle, the ship goes to RESTING state
+            if (encounterType == EncounterType.BATTLE) {
+                selectedShip.setState(ShipState.RESTING);
+                
+                return "Encounter won by " + selectedShip.getName() + " - " + prizeMoney + 
+                       " pounds added to War Chest. War Chest now: " + warChest + " pounds. Ship is now resting.";
+            } else {
+                // For other encounter types, ship remains ACTIVE
+                return "Encounter won by " + selectedShip.getName() + " - " + prizeMoney + 
+                       " pounds added to War Chest. War Chest now: " + warChest + " pounds";
+            }
         } else {
             // Ship loses the encounter
             warChest -= prizeMoney;
@@ -537,7 +602,7 @@ public class SeaBattles implements BATHS
  
     
     // ***************   file write/read  *********************
-    /** Writes whole game to the specified file, to save all progress
+    /** Writes whole game to the specified file
      * @param fname name of file storing requests
      */
     public void saveGame(String fname)

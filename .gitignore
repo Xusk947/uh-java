@@ -1,1 +1,40 @@
-./auto.cmd
+# Compiled class files
+*.class
+
+# Build directories
+/build/
+/bin/
+/target/
+/out/
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# NetBeans specific
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+.vscode/
+
+# Mac OS X files
+.DS_Store
+
+# Temporary files
+*.swp
+*~
+*.log
+tmp/ 

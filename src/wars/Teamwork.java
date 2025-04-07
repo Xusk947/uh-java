@@ -1,10 +1,11 @@
-package wars;
+package wars; 
 
 
 /**
- * Details of your team
+ * This class records information about student contributions to
+ * the project.
  * 
- * @version 26/03/2025
+ * @version 19/02/25
  */
 public class Teamwork
 {

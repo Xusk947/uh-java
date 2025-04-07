@@ -2,9 +2,11 @@ package wars;
 
 import java.io.*;
 /**
- * Enumeration class UnitState - write a description of the enum class here
+ * Enumeration class ShipState
+ * Lists the states of a ship. Ships in the Admirals fleet
+ * will be ACTIVE or RESTING, and if SUNK are no longer in the fleet
  * 
- * @version 12/02/2025
+ * @version 05/01/23
  */
 public enum ShipState implements Serializable
 {

@@ -1,9 +1,9 @@
 package wars;
 
 /**
- * A Sloop ship in the BATHS game
+ * This class represents a Sloop ship in the BATHS system
  * 
- * @version 22/03/2025
+ * @version 12/02/25
  */
 public class Sloop extends Ship 
 {
@@ -62,6 +62,7 @@ public class Sloop extends Ship
     @Override
     public String toString() 
     {
-        return getName() + " " + getCaptain() + " " + getBattleSkill() + " " + commissionFee + " " + hasDoctor + " Sloop";
+        return super.toString() + " - Sloop" + 
+               (hasDoctor ? " with a doctor" : " without a doctor");
     }
 }

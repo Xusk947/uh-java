@@ -1,15 +1,11 @@
 package warTesting;
 
+import wars.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import warTesting.*;
-import wars.BATHS;
-import wars.SeaBattles;
-
 import static org.junit.Assert.*;
 
 

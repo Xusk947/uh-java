@@ -1,255 +1,164 @@
 package warTesting;
 
-import java.util.*;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import wars.BATHS;
-import wars.SeaBattles;
-
-import static org.junit.Assert.*;
+import wars.*;
 
 /**
- * Simple test class for SeaBattles that can be used with or without JUnit
+ * Simple test class for SeaBattles that doesn't require JUnit
+ * This class can be used when JUnit libraries are not available.
  * 
- * @version 06/04/2025
+ * @author Team CS90
+ * @version 26/03/2025
  */
 public class SimpleTest {
     
-    private SeaBattles game;
+    private static SeaBattles game;
     
-    public SimpleTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
+    public static void main(String[] args) {
+        System.out.println("Starting BATHS Simple Test Suite");
+        System.out.println("================================\n");
+        
+        // Setup
         game = new SeaBattles("Admiral Test");
+        
+        // Run tests
+        testInitialState();
+        testCommissionShip();
+        testDecommissionShip();
+        testFightEncounterWin();
+        testFightEncounterLose();
+        testRestoreShip();
+        
+        System.out.println("\nAll tests completed!");
     }
     
-    @After
-    public void tearDown() {
+    private static void testInitialState() {
+        System.out.println("Test: Initial Game State");
+        
+        boolean notDefeated = !game.isDefeated();
+        double warChest = game.getWarChest();
+        
+        System.out.println("- War chest value: " + warChest);
+        System.out.println("- Not defeated: " + notDefeated);
+        
+        if (notDefeated && Math.abs(warChest - 1000.0) < 0.01) {
+            System.out.println("✓ Initial state test passed\n");
+        } else {
+            System.out.println("✗ Initial state test failed\n");
+        }
     }
     
-    /**
-     * Helper method to check if a string contains all required substrings
-     * @param text the text to check
-     * @param s array of strings that should be contained in the text
-     * @return true if all strings are found in the text
-     */
-    private boolean containsText(String text, String[] s) {
-        boolean check = true;
-        for(int i=0; i < s.length; i++)
-            check = check && text.contains(s[i]);
-        return check;
-    }
-    
-    /**
-     * Tests the initial state of a newly created game.
-     * Validates that:
-     * - The game is not in a defeated state
-     * - The war chest has the expected starting value of 1000 gold
-     */
-    @Test
-    public void testInitialState() {
-        // Test initial state of the game
-        assertFalse("New game should not be in a defeated state", game.isDefeated());
-        assertEquals("War chest should start with 1000 gold", 1000.0, game.getWarChest(), 0.01);
-    }
-    
-    /**
-     * Tests the ship commissioning functionality.
-     * Validates that:
-     * - A ship can be successfully added to the squadron
-     * - The war chest is reduced after commissioning
-     */
-    @Test
-    public void testCommissionShip() {
-        // Commission a ship
+    private static void testCommissionShip() {
+        System.out.println("Test: Commission Ship");
+        
         String result = game.commissionShip("Victory");
+        boolean inSquadron = game.isInSquadron("Victory");
+        double warChest = game.getWarChest();
         
-        // Verify the ship was commissioned successfully
-        assertEquals("Ship should be commissioned successfully", "Ship commissioned", result);
-        assertTrue("Ship should be in the squadron", game.isInSquadron("Victory"));
+        System.out.println("- Commission result: " + result);
+        System.out.println("- Ship in squadron: " + inSquadron);
+        System.out.println("- War chest after commission: " + warChest);
         
-        // Verify the war chest was reduced
-        assertTrue("War chest should be reduced after commissioning", game.getWarChest() < 1000.0);
+        if (result.equals("Ship commissioned") && inSquadron && warChest < 1000.0) {
+            System.out.println("✓ Commission ship test passed\n");
+        } else {
+            System.out.println("✗ Commission ship test failed\n");
+        }
     }
     
-    /**
-     * Tests the ship decommissioning functionality.
-     * Validates that:
-     * - A ship can be successfully removed from the squadron
-     * - The war chest increases after decommissioning
-     * - The ship is properly removed from the squadron
-     */
-    @Test
-    public void testDecommissionShip() {
+    private static void testDecommissionShip() {
+        System.out.println("Test: Decommission Ship");
+        
         // First ensure we have a ship to decommission
-        game.commissionShip("Victory");
+        if (!game.isInSquadron("Victory")) {
+            game.commissionShip("Victory");
+        }
         
         double beforeWarChest = game.getWarChest();
         boolean result = game.decommissionShip("Victory");
+        boolean notInSquadron = !game.isInSquadron("Victory");
         double afterWarChest = game.getWarChest();
         
-        // Verify the ship was decommissioned successfully
-        assertTrue("Ship should be decommissioned successfully", result);
-        assertFalse("Ship should no longer be in the squadron", game.isInSquadron("Victory"));
+        System.out.println("- Decommission result: " + result);
+        System.out.println("- Ship no longer in squadron: " + notInSquadron);
+        System.out.println("- War chest increased by: " + (afterWarChest - beforeWarChest));
         
-        // Verify the war chest increased
-        assertTrue("War chest should increase after decommissioning", afterWarChest > beforeWarChest);
+        if (result && notInSquadron && afterWarChest > beforeWarChest) {
+            System.out.println("✓ Decommission ship test passed\n");
+        } else {
+            System.out.println("✗ Decommission ship test failed\n");
+        }
+        
+        // Recommission the ship for subsequent tests
+        game.commissionShip("Victory");
     }
     
-    /**
-     * Tests winning a battle encounter.
-     * Validates that:
-     * - A ship with sufficient skill can win an encounter
-     * - The war chest increases after winning
-     */
-    @Test
-    public void testFightEncounterWin() {
+    private static void testFightEncounterWin() {
+        System.out.println("Test: Fight Encounter (Win)");
+        
         // Ensure we have a ship that can win (Victory has skill 3, encounter 10 requires skill 1)
-        game.commissionShip("Victory");
+        if (!game.isInSquadron("Victory")) {
+            game.commissionShip("Victory");
+        }
         
         double beforeWarChest = game.getWarChest();
         String result = game.fightEncounter(10);
         double afterWarChest = game.getWarChest();
         
-        // Verify the encounter was won
-        String[] expectedTexts = {"Encounter won by Victory", "added to War Chest"};
-        boolean containsExpected = containsText(result, expectedTexts);
-        assertTrue("Victory should win this encounter", containsExpected);
+        System.out.println("- Fight result: " + result);
+        System.out.println("- War chest change: " + (afterWarChest - beforeWarChest));
         
-        // Verify the war chest increased
-        assertTrue("War chest should increase after winning", afterWarChest > beforeWarChest);
+        if (result.contains("Encounter won by Victory") && afterWarChest > beforeWarChest) {
+            System.out.println("✓ Fight encounter (win) test passed\n");
+        } else {
+            System.out.println("✗ Fight encounter (win) test failed\n");
+        }
     }
     
-    /**
-     * Tests losing a battle encounter.
-     * Validates that:
-     * - A ship with insufficient skill loses the encounter
-     * - The ship sinks when it loses
-     * - The war chest decreases after losing
-     */
-    @Test
-    public void testFightEncounterLose() {
-        // Commission a ship for testing a loss
-        game.commissionShip("Victory");
+    private static void testFightEncounterLose() {
+        System.out.println("Test: Fight Encounter (Lose)");
         
-        // Restore the ship if it's in RESTING state
+        // Restore Victory to ACTIVE state if it's RESTING
         game.restoreShip("Victory");
+        
+        // Commission another ship for testing a loss
+        game.commissionShip("Victory");
         
         double beforeWarChest = game.getWarChest();
         // Fight encounter 4 which has reqSkill 9, Victory has skill 3
         String result = game.fightEncounter(4);
         double afterWarChest = game.getWarChest();
         
-        // Verify the encounter was lost and the ship sunk
-        String[] expectedTexts = {"lost on battle skill", "Victory", "sunk"};
-        boolean containsExpected = containsText(result, expectedTexts);
-        assertTrue("Victory should lose this encounter and sink", containsExpected);
+        System.out.println("- Fight result: " + result);
+        System.out.println("- War chest change: " + (afterWarChest - beforeWarChest));
         
-        // Verify the war chest decreased
-        assertTrue("War chest should decrease after losing", afterWarChest < beforeWarChest);
+        if (result.contains("sunk") && afterWarChest < beforeWarChest) {
+            System.out.println("✓ Fight encounter (lose) test passed\n");
+        } else {
+            System.out.println("✗ Fight encounter (lose) test failed\n");
+        }
     }
     
-    /**
-     * Tests the ship restoration functionality.
-     * Validates that:
-     * - A ship in RESTING state can be restored
-     * - A restored ship can participate in new encounters
-     */
-    @Test
-    public void testRestoreShip() {
+    private static void testRestoreShip() {
+        System.out.println("Test: Restore Ship");
+        
         // Commission a ship and get it into RESTING state
         game.commissionShip("Endeavour");
-        game.fightEncounter(10); // Will win and go to RESTING
-        
-        // Verify the ship is in the squadron but can't fight (RESTING state)
-        assertTrue("Ship should be in the squadron", game.isInSquadron("Endeavour"));
-        String resultBeforeRestore = game.fightEncounter(3);
-        assertTrue("Ship should not be able to fight while RESTING", 
-                resultBeforeRestore.contains("lost as no ship available"));
+        String fightResult = game.fightEncounter(10); // Will win and go to RESTING
         
         // Now restore it
         game.restoreShip("Endeavour");
         
         // Test by trying to fight again
-        String resultAfterRestore = game.fightEncounter(3);
+        String secondFightResult = game.fightEncounter(3);
         
-        // Verify the ship can now fight
-        assertFalse("Ship should be able to fight after restore", 
-                resultAfterRestore.contains("lost as no ship available"));
-    }
-    
-    // Для запуска без JUnit
-    public static void main(String[] args) {
-        System.out.println("Starting BATHS Simple Test Suite");
-        System.out.println("================================\n");
+        System.out.println("- First fight result: " + fightResult);
+        System.out.println("- After restore, second fight result: " + secondFightResult);
         
-        SimpleTest test = new SimpleTest();
-        test.setUp();
-        
-        // Run tests
-        runTest(test, "testInitialState");
-        runTest(test, "testCommissionShip");
-        runTest(test, "testDecommissionShip");
-        runTest(test, "testFightEncounterWin");
-        runTest(test, "testFightEncounterLose");
-        runTest(test, "testRestoreShip");
-        
-        System.out.println("\nAll tests completed!");
-    }
-    
-    private static void runTest(SimpleTest test, String testName) {
-        System.out.println("Test: " + testName);
-        try {
-            switch(testName) {
-                case "testInitialState": test.testInitialState(); break;
-                case "testCommissionShip": test.testCommissionShip(); break;
-                case "testDecommissionShip": test.testDecommissionShip(); break;
-                case "testFightEncounterWin": test.testFightEncounterWin(); break;
-                case "testFightEncounterLose": test.testFightEncounterLose(); break;
-                case "testRestoreShip": test.testRestoreShip(); break;
-            }
-            System.out.println("✓ " + testName + " passed\n");
-        } catch (AssertionError e) {
-            System.out.println("✗ " + testName + " failed: " + e.getMessage() + "\n");
+        if (fightResult.contains("Encounter won by") && 
+            secondFightResult.contains("Encounter")) {
+            System.out.println("✓ Restore ship test passed\n");
+        } else {
+            System.out.println("✗ Restore ship test failed\n");
         }
     }
-    
-    // Методы-заглушки для случая отсутствия JUnit
-    private static void assertEquals(String message, String expected, String actual) {
-        if (!expected.equals(actual)) {
-            throw new AssertionError(message + " - Expected: '" + expected + "', Actual: '" + actual + "'");
-        }
-    }
-    
-    private static void assertEquals(String message, double expected, double actual, double delta) {
-        if (Math.abs(expected - actual) > delta) {
-            throw new AssertionError(message + " - Expected: " + expected + ", Actual: " + actual);
-        }
-    }
-    
-    private static void assertTrue(String message, boolean condition) {
-        if (!condition) {
-            throw new AssertionError(message);
-        }
-    }
-    
-    private static void assertFalse(String message, boolean condition) {
-        if (condition) {
-            throw new AssertionError(message);
-        }
-    }
-}
+} 

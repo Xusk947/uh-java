@@ -3,13 +3,15 @@ package wars;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.*;
+import java.io.*;
 
 /**
  * Provide a GUI interface for the game
  * 
  * @version 20/02/12
  */
-public class GameGUI {
+public class GameGUI extends JFrame implements GameUI {
     // Colors for modern design based on shadcn (light theme)
     private static final Color BG_COLOR = new Color(255, 255, 255); // --background: 0 0% 100%
     private static final Color FG_COLOR = new Color(10, 10, 13); // --foreground: 240 10% 3.9%
@@ -86,6 +88,15 @@ public class GameGUI {
         gp = new SeaBattles(admiralName);
         makeFrame();
         makeMenuBar(myFrame);
+    }
+
+    /**
+     * Implements the doMain method from the GameUI interface
+     */
+    @Override
+    public void doMain() {
+        // The GUI implementation starts automatically in the constructor
+        // This method exists to satisfy the GameUI interface
     }
 
     /**
